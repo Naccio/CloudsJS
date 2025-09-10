@@ -20,6 +20,7 @@
       <button id="play-pause" role="button">Pause</button>
       <label for="wind">Wind direction</label>
       <input id="wind" type="range" min="0" max="360" list="markers" value="0" />
+      <span id="wind-display">0°</span>
 
       <datalist id="markers">
         <option value="0" label="0°"></option>
@@ -66,7 +67,8 @@
   clouds.add(-w * 3 / 4, h / 4, smallW, smallH, 40, { r: 215, g: 215, b: 215, a: 0.2 }, 140);
 
   const playPause = document.getElementById('play-pause'),
-    windInput = document.getElementById('wind');
+    windInput = document.getElementById('wind'),
+    windDisplay = document.getElementById('wind-display');
 
   let running;
 
@@ -80,8 +82,9 @@
 
   windInput.addEventListener('input', () => {
     const wind = windInput.value * (Math.PI / 180);
-    clouds.setWind(wind);
-    bgClouds.setWind(wind);
+    clouds.setWindDirection(wind);
+    bgClouds.setWindDirection(wind);
+    windDisplay.innerText = windInput.value + '°';
   });
 
   function play() {

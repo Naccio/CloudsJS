@@ -43,6 +43,10 @@ canvas {
     z-index: 2;
 }
 
+#wind-display {
+    width: 2em;
+}
+
 h1 {
     font-family: Arial Black, sans-serif;
     font-size: 15vw;
