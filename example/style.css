@@ -26,6 +26,10 @@ a {
     z-index: -1;
 }
 
+#static-bg-canvas {
+    z-index: -2;
+}
+
 #content {
     display: flex;
     justify-content: center;
