@@ -2,7 +2,7 @@ function getRandom(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
-export function createCloud(x, y, w, h, circles, color, speed) {
+export function createCloud(x, y, w, h, circles, color) {
 	const halfW = w / 2;
 	const halfH = h / 2;
 	const canvas = document.createElement("canvas");
@@ -40,7 +40,6 @@ export function createCloud(x, y, w, h, circles, color, speed) {
 		y,
 		w,
 		h,
-		speed,
 		color,
 		canvas
 	};
@@ -99,8 +98,9 @@ export default class Clouds {
 	}
 
 	add(x, y, w, h, circles, color, speed) {
-		const cloud = createCloud(x, y, w, h, circles, color, speed);
+		const cloud = createCloud(x, y, w, h, circles, color);
 
+		cloud.speed = speed;
 		this.#clouds.push(cloud);
 	}
 
