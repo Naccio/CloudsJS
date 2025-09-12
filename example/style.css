@@ -13,6 +13,11 @@ canvas {
     height: 100%;
 }
 
+a {
+    font-family: monospace;
+    text-decoration: none;
+}
+
 #canvas {
     z-index: 1;
 }
