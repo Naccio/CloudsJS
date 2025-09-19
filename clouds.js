@@ -1,4 +1,9 @@
 /**
+ * Clouds.js: a module for creating and animating clouds.
+ * @module clouds
+ */
+
+/**
  * A cloud managed by this module
  * @typedef {Object} Cloud
  * @property {number} x - The cloud's center on the horizontal axis.
