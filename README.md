@@ -2,8 +2,6 @@
 
 A JavaScript module for creating and animating clouds on an HTML canvas.
 
-> The cloud generation logic is inspired by [Cloudgen.js](https://github.com/Ninjakannon/Cloudgen.js).
-
 
 ## Usage
 
@@ -13,11 +11,9 @@ Couds.js is a JavaScript [module](https://developer.mozilla.org/en-US/docs/Web/J
 <script src="clouds.min.js" type="module"></script>
 ```
 
-At this point, its features can be referenced within your own script using an [import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) statement.
-
-There are **two** ways of using the module:
-- **Static usage**: exposes the basic functions for creating and rendering clouds, it is useful if you don't need animation or want to do it yourself;
-- **Animated usage**: provides a streamlined way of animating clouds on a canvas; it is the preferred way of using the module.
+The module's features can be referenced within your own script using an `import` statement and there are **two** sets of features that can be imported depending on the intended usage:
+- **Static usage**: you want to access the basic functions for creating and rendering clouds, beacause you don't need animation or want to do it yourself;
+- **Animated usage**: you need a streamlined way of animating clouds on a canvas, it is the preferred way of using the module.
 
 In the following sections we will see how both work, giving some examples that are taken from the `/example` folder of this repository, which can be seen live at this [link](https://www.naccio.net/clouds).
 
@@ -79,7 +75,7 @@ canvas.height = h;
 const clouds = new Clouds(canvas);
 ```
 
-To create a cloud you can call the `add` method exposed by the instance. This works as the `createCloud` function, meaning that it needs position, dimensions, granularity and color, but, in addition, it also needs a **speed**, expressed in **pixels per second**.
+To add a cloud to the canvas managed by the instance, you can call the `add` method exposed by it. This works as the `createCloud` function, meaning that it needs position, dimensions, granularity and color, but, in addition, it also needs a **speed**, expressed in **pixels per second**.
 
 In the followng example, a cloud is created off-screen, so when the animation is run, it will enter from the left and move across the screen towards the right. Once the cloud exits the screen, it will **loop back on the opposite side**.
 
@@ -116,3 +112,31 @@ If you want to provide a **background** color to the canvas, you can call the `s
 ```
 clouds.setSkyColor('skyblue');
 ```
+
+
+## Model
+
+> The idea of this module, especially the cloud generation logic, is inspired by [Cloudgen.js](https://github.com/Ninjakannon/Cloudgen.js). However, the code has been mostly changed, rewritten or added upon (*e.g.* it is now a module instead of an IIFE), so I think it belongs in its own repository. Still, I believe that mentioning where I took inspiration from is the correct thing to do.
+
+Each cloud is represented by an **ellipse** and can be created by providing its position, dimensions, granularity and color. These, as mentioned, are the parameters needed by both the `createCloud` function and the `Clouds.add` method, and they are defined as follows:
+
+```
+ /*
+ * @param {number} x - The cloud's center on the horizontal axis.
+ * @param {number} y - The cloud's center on the vertical axis.
+ * @param {number} w - The cloud's width.
+ * @param {number} h - The cloud's height.
+ * @param {number} circles - The number of circles used to generate the cloud.
+ * @param {Object} color - The cloud's color.
+ * @param {number} color.r - The color's red value.
+ * @param {number} color.g - The color's green value.
+ * @param {number} color.b - The color's blue value.
+ * @param {number} color.a - The color's alpha value.
+ */
+ ```
+
+Upon creation, within the boundaries of the ellipse defined by the provided dimensions, a number of **randomly positioned and dimensioned circles** are generated. The number of circles is decided by the `circles` parameter, and is what we called "granularity" up to this point.
+
+Once the circles have been generated, they are pre-rendered on an independent canvas, to avoid re-rendering each circle on every animation frame. In fact, the cloud's canvas is what is rendered by the `drawCloud` function and the `Clouds` class' animation logic.
+
+> Note that this means that, once constructed, **a cloud can no longer be changed** in its dimensions, granularity or color. Only its position can change.
