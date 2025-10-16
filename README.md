@@ -107,7 +107,7 @@ clouds.setWindDirection(Math.PI / 4);
 
 If you want to provide a **background** color to the canvas, you can call the `setSkyColor` and pass it a string representing a CSS color.
 
-> Note that every time the instance renders the clouds on its canvas, it will clear it first, meaning that if you draw other things on it, they will be erased.
+> Every time the instance renders the clouds on its canvas, it will clear it first, meaning that if you draw other things on it, they will be erased.
 
 ```
 clouds.setSkyColor('skyblue');
@@ -121,17 +121,22 @@ clouds.setSkyColor('skyblue');
 Each cloud is represented by an **ellipse** and can be created by providing its position, dimensions, granularity and color. These, as mentioned, are the parameters needed by both the `createCloud` function and the `Clouds.add` method, and they are defined as follows:
 
 ```
- /*
+
+/**
+ * @typedef {Object} Color
+ * @property {number} r - The color's red value, between 0 and 255.
+ * @property {number} g - The color's green value, between 0 and 255.
+ * @property {number} b - The color's blue value, between 0 and 255.
+ * @property {number} a - The color's alpha value, between 0 and 1.
+ *7
+
+/**
  * @param {number} x - The cloud's center on the horizontal axis.
  * @param {number} y - The cloud's center on the vertical axis.
- * @param {number} w - The cloud's width.
- * @param {number} h - The cloud's height.
+ * @param {number} w - The cloud's width in pixels.
+ * @param {number} h - The cloud's height in pixels.
  * @param {number} circles - The number of circles used to generate the cloud.
- * @param {Object} color - The cloud's color.
- * @param {number} color.r - The color's red value.
- * @param {number} color.g - The color's green value.
- * @param {number} color.b - The color's blue value.
- * @param {number} color.a - The color's alpha value.
+ * @param {Color} color - The cloud's color.
  */
  ```
 
@@ -139,4 +144,19 @@ Upon creation, within the boundaries of the ellipse defined by the provided dime
 
 Once the circles have been generated, they are pre-rendered on an independent canvas, to avoid re-rendering each circle on every animation frame. In fact, the cloud's canvas is what is rendered by the `drawCloud` function and the `Clouds` class' animation logic.
 
-> Note that this means that, once constructed, **a cloud can no longer be changed** in its dimensions, granularity or color. Only its position can change.
+> This means that, once constructed, **a cloud can no longer be changed** in its dimensions, granularity or color. Only its position can change.
+
+
+## Ideas for further improvements
+
+**I don't plan on adding features to this project in the foreseeable future.** However, I think it's worth it to take note of the ideas that I had while working on it.
+
+In no particular order, these are some thing that I think could improve this module:
+- **Seeded clouds**: Each cloud is randomly generated within the given boundaries, it could be nice to have a deterministic way of creating them;
+- **Cloud management**: The `Clouds` class can only add new clouds, it would be better for it to be capable of removing them and maybe even of updating their shape or color;
+- **Out of canvas behavior**: Once a cloud exits the canvas it is looped back on the opposite side, it could be useful to be able to customize this behavior (*e.g.* remove a cloud once it is out of boundaries);
+- **Customize rendering**: Every animation frame the canvas is cleared making it impossible to use it for other things, it would be better to allow its usage by
+  - providing a callback on the animation frame or
+  - allowing to manually call the `update` and `draw` methods instead of running the animation.
+
+> Keep in mind that this is no promise of implementing these features: as I said, I have no plan to do so.
