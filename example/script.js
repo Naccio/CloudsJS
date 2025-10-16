@@ -10,7 +10,7 @@ const staticBgContext = staticBgCanvas.getContext('2d');
 staticBgCanvas.width = w;
 staticBgCanvas.height = h;
 
-const cloud = createCloud(w / 2, h / 2, w, h, 60, { r: 150, g: 150, b: 150, a: 0.4 }, 4);
+const cloud = createCloud(w / 2, h / 2, w, h, 60, { r: 150, g: 150, b: 150, a: 0.4 });
 
 staticBgContext.fillStyle = 'skyblue';
 staticBgContext.fillRect(0, 0, w, h);
