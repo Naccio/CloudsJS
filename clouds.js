@@ -10,8 +10,8 @@
  * @typedef {Object} Cloud
  * @property {number} x - The cloud's center on the horizontal axis.
  * @property {number} y - The cloud's center on the vertical axis.
- * @property {number} w - The cloud's width.
- * @property {number} h - The cloud's height.
+ * @property {number} w - The cloud's width in pixels.
+ * @property {number} h - The cloud's height in pixels.
  * @property {HTMLCanvasElement} canvas - An HTML canvas element depicting the pre-rendered cloud.
  */
 
