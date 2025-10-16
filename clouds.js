@@ -1,6 +1,8 @@
 /**
  * Clouds.js: a module for creating and animating clouds.
  * @module clouds
+ * @version 1.0.0
+ * @author Naccio
  */
 
 /**
