@@ -5,14 +5,14 @@ A JavaScript module for creating and animating clouds on an HTML canvas.
 
 ## Usage
 
-Couds.js is a JavaScript [module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), which means that it can be included in your HTML using the `script` tag with a `type="module"` attribute, like so:
+Clouds.js is a JavaScript [module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), which means that it can be included in your HTML using the `script` tag with a `type="module"` attribute, like so:
 
 ```
 <script src="clouds.min.js" type="module"></script>
 ```
 
 The module's features can be referenced within your own script using an `import` statement and there are **two** sets of features that can be imported depending on the intended usage:
-- **Static usage**: you want to access the basic functions for creating and rendering clouds, beacause you don't need animation or want to do it yourself;
+- **Static usage**: you want to access the basic functions for creating and rendering clouds, because you don't need animation or want to do it yourself;
 - **Animated usage**: you need a streamlined way of animating clouds on a canvas, it is the preferred way of using the module.
 
 In the following sections we will see how both work, giving some examples that are taken from the `/example` folder of this repository, which can be seen live at this [link](https://www.naccio.net/clouds).
@@ -77,7 +77,7 @@ const clouds = new Clouds(canvas);
 
 To add a cloud to the canvas managed by the instance, you can call the `add` method exposed by it. This works as the `createCloud` function, meaning that it needs position, dimensions, granularity and color, but, in addition, it also needs a **speed**, expressed in **pixels per second**.
 
-In the followng example, a cloud is created off-screen, so when the animation is run, it will enter from the left and move across the screen towards the right. Once the cloud exits the screen, it will **loop back on the opposite side**.
+In the following example, a cloud is created off-screen, so when the animation is run, it will enter from the left and move across the screen towards the right. Once the cloud exits the screen, it will **loop back on the opposite side**.
 
 ```
 clouds.add(-w * 3 / 4, h * 3 / 4, w * 3 / 4, h * 3 / 4, 30, { r: 230, g: 230, b: 230, a: 0.2 }, 110);
@@ -107,7 +107,7 @@ clouds.setWindDirection(Math.PI / 4);
 
 If you want to provide a **background** color to the canvas, you can call the `setSkyColor` and pass it a string representing a CSS color.
 
-> Note that every time the instansce renders the clouds on its canvas, it will clear it first, meaning that if you draw other things on it, they will be erased.
+> Note that every time the instance renders the clouds on its canvas, it will clear it first, meaning that if you draw other things on it, they will be erased.
 
 ```
 clouds.setSkyColor('skyblue');

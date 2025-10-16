@@ -8,7 +8,7 @@
  * @typedef {Object} Cloud
  * @property {number} x - The cloud's center on the horizontal axis.
  * @property {number} y - The cloud's center on the vertical axis.
- * @property {HTMLCanvasElement} canvas - An HTML canvas element depiting the pre-rendered cloud.
+ * @property {HTMLCanvasElement} canvas - An HTML canvas element depicting the pre-rendered cloud.
  */
 
 /**
@@ -126,7 +126,7 @@ export default class Clouds {
 		}
 
 		this.#running = true;
-		this.#aniamtionFrame();
+		this.#animationFrame();
 	}
 
 	/**
@@ -192,10 +192,10 @@ export default class Clouds {
 		}
 
 		this.#lastUpdate = timestamp;
-		this.#aniamtionFrame();
+		this.#animationFrame();
 	}
 
-	#aniamtionFrame() {
+	#animationFrame() {
 		this.#animationId = requestAnimationFrame((t) => this.#animate(t));
 	}
 
