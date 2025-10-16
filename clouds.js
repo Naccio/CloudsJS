@@ -8,52 +8,60 @@
  * @typedef {Object} Cloud
  * @property {number} x - The cloud's center on the horizontal axis.
  * @property {number} y - The cloud's center on the vertical axis.
+ * @property {number} w - The cloud's width.
+ * @property {number} h - The cloud's height.
  * @property {HTMLCanvasElement} canvas - An HTML canvas element depicting the pre-rendered cloud.
+ */
+
+/**
+ * A color used to render a cloud.
+ * @typedef {Object} Color
+ * @property {number} r - The color's red value, between 0 and 255.
+ * @property {number} g - The color's green value, between 0 and 255.
+ * @property {number} b - The color's blue value, between 0 and 255.
+ * @property {number} a - The color's alpha value, between 0 and 1.
  */
 
 /**
  * Create a new cloud and pre-render it on a new canvas.
  * @param {number} x - The cloud's center on the horizontal axis.
  * @param {number} y - The cloud's center on the vertical axis.
- * @param {number} w - The cloud's width.
- * @param {number} h - The cloud's height.
+ * @param {number} w - The cloud's width in pixels.
+ * @param {number} h - The cloud's height in pixels.
  * @param {number} circles - The number of circles used to generate the cloud.
- * @param {Object} color - The cloud's color.
- * @param {number} color.r - The color's red value.
- * @param {number} color.g - The color's green value.
- * @param {number} color.b - The color's blue value.
- * @param {number} color.a - The color's alpha value.
+ * @param {Color} color - The cloud's color.
  * @returns {Cloud} A new cloud built according to the given parameters. 
  */
 export function createCloud(x, y, w, h, circles, color) {
-	const halfW = w / 2;
-	const halfH = h / 2;
-	const canvas = document.createElement("canvas");
-	const context = canvas.getContext("2d");
+	const halfW = w / 2,
+		halfH = h / 2,
+		twoPi = Math.PI * 2,
+		{ r, g, b, a } = color,
+		canvas = document.createElement("canvas"),
+		context = canvas.getContext("2d");
 
 	canvas.width = w;
 	canvas.height = h;
 
 	for (let i = 0; i < circles; i++) {
-		const scale = Math.random() * 0.75,
-			direction = Math.random() * Math.PI * 2,
-			xShift = Math.cos(direction) * scale * halfW,
-			yShift = Math.sin(direction) * scale * halfH,
+		const scale = getRandom(0, .75),
+			direction = getRandom(0, twoPi),
+			// de La Hire
+			xShift = Math.cos(direction) * halfW * scale,
+			yShift = Math.sin(direction) * halfH * scale,
 			circleX = halfW + xShift,
 			circleY = halfH + yShift,
 			maxRadius = Math.min(halfW - Math.abs(xShift), halfH - Math.abs(yShift)),
-			circleRadius = maxRadius * getRandom(0.5, 1);
+			circleRadius = maxRadius * getRandom(.5, 1),
+			gradient = context.createRadialGradient(circleX, circleY, 0, circleX, circleY, circleRadius);
 
-		const gradient = context.createRadialGradient(circleX, circleY, 0, circleX, circleY, circleRadius);
-		const gradientColor = "rgba(" + color.r + ", " + color.g + ", " + color.b + ", ";
-
-		gradient.addColorStop(0, gradientColor + color.a + ")");
-		gradient.addColorStop(1, gradientColor + "0)");
+		gradient.addColorStop(0, `rgba(${r},${g},${b},${a})`);
+		gradient.addColorStop(1, `rgba(${r},${g},${b},0)`);
 
 		context.fillStyle = gradient;
 
 		context.beginPath();
-		context.arc(circleX, circleY, circleRadius, 0, Math.PI * 2, true);
+		context.arc(circleX, circleY, circleRadius, 0, twoPi, true);
 		context.fill();
 		// context.stroke();
 	}
@@ -77,7 +85,7 @@ export function createCloud(x, y, w, h, circles, color) {
 export function drawCloud(cloud, context) {
 	context.drawImage(cloud.canvas, cloud.x - cloud.w / 2, cloud.y - cloud.h / 2);
 	// context.beginPath();
-	// context.rect(cloud.x - cloud.w / 2, cloud.y - cloud.h / 2, cloud.w, cloud.h);
+	// context.ellipse(cloud.x, cloud.y, cloud.w / 2, cloud.h / 2, 0, 0, 2 * Math.PI);
 	// context.stroke();
 }
 
@@ -90,6 +98,7 @@ export default class Clouds {
 	#sky = "rgba(0,0,0,0)";
 	#running = false;
 	#lastUpdate;
+	#idleThreshold = 250;
 	#context;
 	#animationId;
 
@@ -151,15 +160,11 @@ export default class Clouds {
 	 * Add a new cloud to the canvas managed by this instance.
 	 * @param {number} x - The cloud's center on the horizontal axis.
 	 * @param {number} y - The cloud's center on the vertical axis.
-	 * @param {number} w - The cloud's width.
-	 * @param {number} h - The cloud's height.
+	 * @param {number} w - The cloud's width in pixels.
+	 * @param {number} h - The cloud's height in pixels.
 	 * @param {number} circles - The number of circles used to generate the cloud.
-	 * @param {Object} color - The cloud's color.
-	 * @param {number} color.r - The color's red value.
-	 * @param {number} color.g - The color's green value.
-	 * @param {number} color.b - The color's blue value.
-	 * @param {number} color.a - The color's alpha value.
-	 * @param {number} speed - The cloud's speed expressed in pixels per second.
+	 * @param {Color} color - The cloud's color.
+	 * @param {number} speed - The cloud's speed in pixels per second.
 	 */
 	add(x, y, w, h, circles, color, speed) {
 		const cloud = createCloud(x, y, w, h, circles, color);
@@ -186,7 +191,7 @@ export default class Clouds {
 	#animate(timestamp) {
 		const elapsed = timestamp - this.#lastUpdate;
 
-		if (this.#lastUpdate !== undefined && elapsed < 250) {
+		if (this.#lastUpdate !== undefined && elapsed < this.#idleThreshold) {
 			this.#update(elapsed);
 			this.draw();
 		}
