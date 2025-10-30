@@ -166,8 +166,6 @@ In no particular order, these are some thing that I think could improve this mod
 - **Seeded clouds**: Each cloud is randomly generated within the given boundaries, it could be nice to have a deterministic way of creating them;
 - **Cloud management**: The `Clouds` class can only add new clouds, it would be better for it to be capable of removing them and maybe even of updating their shape or color;
 - **Out of canvas behavior**: Once a cloud exits the canvas it is looped back on the opposite side, it could be useful to be able to customize this behavior (*e.g.* remove a cloud once it is out of boundaries);
-- **Customize rendering**: Every animation frame the canvas is cleared making it impossible to use it for other things, it would be better to allow its usage by
-  - providing a callback on the animation frame or
-  - allowing to manually call the `update` and `draw` methods instead of running the animation.
+- **Customize rendering**: Every animation frame the canvas is cleared making it hard to use it for other things, even when manually handling the frames. It would be better if there was a setting to decide whether to automatically clear the canvas.
 
 > Keep in mind that this is no promise of implementing these features: as I said, I have no plan to do so.
