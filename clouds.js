@@ -1,7 +1,7 @@
 /**
  * Clouds.js: a module for creating and animating clouds.
  * @module clouds
- * @version 1.0.0
+ * @version 1.1.0
  * @author Naccio
  */
 
@@ -190,23 +190,11 @@ export default class Clouds {
 		this.#clouds.forEach(cloud => drawCloud(cloud, this.#context));
 	}
 
-	#animate(timestamp) {
-		const elapsed = timestamp - this.#lastUpdate;
-
-		if (this.#lastUpdate !== undefined && elapsed < this.#idleThreshold) {
-			this.#update(elapsed);
-			this.draw();
-		}
-
-		this.#lastUpdate = timestamp;
-		this.#animationFrame();
-	}
-
-	#animationFrame() {
-		this.#animationId = requestAnimationFrame((t) => this.#animate(t));
-	}
-
-	#update(elapsed) {
+	/**
+	 * Manually update the clouds managed by this instance.
+	 * @param {number} elapsed - The time elapsed since the last update in milliseconds.
+	 */
+	update(elapsed) {
 		this.#clouds.forEach(cloud => {
 			const
 				context = this.#context,
@@ -232,6 +220,22 @@ export default class Clouds {
 				cloud.y = h + halfH;
 			}
 		});
+	}
+
+	#animate(timestamp) {
+		const elapsed = timestamp - this.#lastUpdate;
+
+		if (this.#lastUpdate !== undefined && elapsed < this.#idleThreshold) {
+			this.update(elapsed);
+			this.draw();
+		}
+
+		this.#lastUpdate = timestamp;
+		this.#animationFrame();
+	}
+
+	#animationFrame() {
+		this.#animationId = requestAnimationFrame((t) => this.#animate(t));
 	}
 }
 

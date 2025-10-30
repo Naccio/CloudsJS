@@ -95,6 +95,17 @@ Similarly, to **pause the animation** you can call the `pause` method:
 clouds.pause();
 ```
 
+Instead of relying on the automatic animation, it is possible to manually handle each frame by using the `update` and `draw` methods.
+
+```
+// Simulate 60fps, in a real scenario this would be computed from
+// window.requestAnimationFrame() or other similar methods
+const elapsedTime = 1000 / 60;
+
+clouds.update(elapsedTime);
+clouds.draw();
+```
+
 The **direction** of the clouds can be controlled by calling the `setWindDirection` method and providing it with an angle expressed in radians.
 
 In the following example, after calling the method, the clouds will move at an angle of 45°.
